@@ -15,12 +15,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-def get_current_day():
+def get_current_day() -> str:
     # Get the current day of the week in full
     days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     return days[datetime.now(pytz.utc).weekday()]
 
-def validate_utc_time():
+def is_valid_utc_time() -> bool:
     # Get current UTC time and check if it's within +/-2 minutes
     current_time = datetime.now(pytz.utc)
     allowed_time_window = timedelta(minutes=2)
@@ -31,7 +31,7 @@ async def get_info(
     slack_name: str = Query(..., description="User Slack name"),
     track: str = Query(..., description="User chosen track (e.g., 'backend, devops')")
 ):
-    if not validate_utc_time():
+    if not is_valid_utc_time():
         raise HTTPException(status_code=500, detail="Invalid UTC time")
 
     current_day = get_current_day()
@@ -40,7 +40,7 @@ async def get_info(
     github_repo_url = "https://github.com/princewilling/HNGx"
     status_code = 200
 
-    response = {
+    return {
         "slack_name": slack_name,
         "current_day": current_day,
         "utc_time": utc_time,
@@ -49,7 +49,6 @@ async def get_info(
         "github_repo_url": github_repo_url,
         "status_code": status_code
     }
-    return response
 
 if __name__ == "__main__":
     import uvicorn
