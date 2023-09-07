@@ -1,8 +1,19 @@
 from fastapi import FastAPI, HTTPException, Query
 from datetime import datetime, timedelta
+from fastapi.middleware.cors import CORSMiddleware
 import pytz
 
 app = FastAPI()
+
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 def get_current_day():
     # Get the current day of the week in full
