@@ -17,16 +17,16 @@ def validate_utc_time():
 
 @app.get("/api")
 async def get_info(
-    slack_name: str = Query(..., description="Your Slack name"),
-    track: str = Query(..., description="Your chosen track (e.g., 'backend')")
+    slack_name: str = Query(..., description="User Slack name"),
+    track: str = Query(..., description="User chosen track (e.g., 'backend, devops')")
 ):
     if not validate_utc_time():
         raise HTTPException(status_code=500, detail="Invalid UTC time")
 
     current_day = get_current_day()
     utc_time = datetime.now(pytz.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    github_file_url = "https://github.com/username/repo/blob/main/file_name.ext"
-    github_repo_url = "https://github.com/username/repo"
+    github_file_url = "https://github.com/princewilling/HNGx/blob/main/task-one/server.py"
+    github_repo_url = "https://github.com/princewilling/HNGx"
     status_code = 200
 
     response = {
